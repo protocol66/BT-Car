@@ -15,68 +15,28 @@ import org.jetbrains.anko.toast
 
 class DeviceSelectActivity : AppCompatActivity() {
 
-    private var btAdapter: BluetoothAdapter? = null
-    private lateinit var pairedDevices: Set<BluetoothDevice>
-    private val REQUEST_ENABLE_BLUETOOTH = 1
-
-    companion object {
-        val EXTRA_ADDRESS: String = "Device_address"
-    }
+    private val btAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+    private val pairedDevices : Set<BluetoothDevice>? = btAdapter?.bondedDevices
+    private val REQUEST_ENABLE_BT = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.device_select_layout)
 
-        btAdapter = BluetoothAdapter.getDefaultAdapter()
-        if(btAdapter == null) {
-            toast("this device doesn't support bluetooth")
+        if (btAdapter == null) {
+            // Device doesn't support Bluetooth
+            toast("This device does not support Bluetooth")
             return
         }
-        if(!btAdapter!!.isEnabled) {
-            val enableBluetoothIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BLUETOOTH)
+        if (!btAdapter.isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
 
-        select_device_list.setOnClickListener { pairedDeviceList() }
-    }
-
-    private fun pairedDeviceList() {
-        pairedDevices = btAdapter!!.bondedDevices
-        val list : ArrayList<BluetoothDevice> = ArrayList()
-
-        if (pairedDevices.isNotEmpty()) {
-            for (device: BluetoothDevice in pairedDevices) {
-                list.add(device)
-                Log.i("device", ""+device)
-            }
-        } else {
-            toast("no paired bluetooth devices found")
+        pairedDevices?.forEach { device ->
+            val deviceName = device.name
+            val deviceHardwareAddress = device.address // MAC Address
         }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
-        select_device_list.adapter = adapter
-        select_device_list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val device: BluetoothDevice = list[position]
-            val address: String = device.address
-
-            val intent = Intent(this, CarControlActivity::class.java)
-            intent.putExtra(EXTRA_ADDRESS, address)
-            startActivity(intent)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_ENABLE_BLUETOOTH) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (btAdapter!!.isEnabled) {
-                    toast("Bluetooth has been enabled")
-                } else {
-                    toast("Bluetooth has been disabled")
-                }
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                toast("Bluetooth enabling has been canceled")
-            }
-        }
     }
 }
