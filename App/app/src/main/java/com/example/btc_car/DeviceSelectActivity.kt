@@ -16,7 +16,6 @@ import org.jetbrains.anko.toast
 class DeviceSelectActivity : AppCompatActivity() {
 
     private val btAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
-    private val pairedDevices : Set<BluetoothDevice>? = btAdapter?.bondedDevices
     private val REQUEST_ENABLE_BT = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +32,25 @@ class DeviceSelectActivity : AppCompatActivity() {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
 
+        select_device_list.setOnClickListener{ pairedDevicesList() }
+    }
+
+    private fun pairedDevicesList() {
+        val pairedDevices : Set<BluetoothDevice>? = btAdapter?.bondedDevices
+        val deviceList : ArrayList<BluetoothDevice> = ArrayList()
         pairedDevices?.forEach { device ->
             val deviceName = device.name
             val deviceHardwareAddress = device.address // MAC Address
         }
+        if (pairedDevices?.isNotEmpty()!!) {
+            for (device in pairedDevices) {
+                deviceList.add(device)
+            }
+        } else {
+            toast("No devices paired")
+        }
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, deviceList)
 
     }
 }
