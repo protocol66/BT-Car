@@ -1,0 +1,37 @@
+Processor Expert Version 0444
+ProjectModificationStamp=0
+
+[Header]
+Name=interupt_example
+SavedBy=jon
+ModificationStamp=0
+Date=2020-11-15
+Product=Processor Expert version 3.02 for Freescale HCS12(X) family
+IDE=CW Plug-In IDE
+PEversion=4.44.0.5282
+
+
+[Options]
+EventsDirectory=CODE\
+GeneratedCodeDirectory=Generated_Code\
+DocumentationDir=DOC\
+CompiledFilesSubDir=
+ProjectSettingsDirectory=Project_Settings\
+TemporaryDir=%TEMP%
+OverwriteEvents=3
+UpdateUserModuleIncludes=Yes
+GenerateISRs=No
+DeleteUnusedEvents=Yes
+OverwriteBeanDrv=0
+ReviewCodeGenChanges=No
+ReviewCommentChanges=No
+UseExistingModules=No
+RenamePeripheries=No
+Autodependency=Yes
+ProjectCompNumb=1
+DelUnusedPreviouslyGenFiles=Yes
+GeneratedCodeFrozen=No
+UserInterface=CLASSIC
+DontWriteGeneratedModules=0
+
+[_end_]
