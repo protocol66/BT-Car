@@ -8,10 +8,31 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.toast
 
+class MyAdapter(private val dataset: ArrayList<BluetoothDevice>) :
+        RecyclerView.Adapter<MyAdapter.MyViewHolder> () {
+    class MyViewHolder (val textView: TextView) : RecyclerView.ViewHolder(textView)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val textView = LayoutInflater.from(parent.context).inflate(R.layout.device_select_layout, parent, false) as TextView
+        textView.autoSizeMaxTextSize
+        return MyViewHolder(textView)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.textView.text = dataset[position].name
+    }
+
+    override fun getItemCount() = dataset.size
+}
 
 class DeviceSelectActivity : AppCompatActivity() {
 
@@ -38,10 +59,14 @@ class DeviceSelectActivity : AppCompatActivity() {
     private fun pairedDevicesList() {
         val pairedDevices : Set<BluetoothDevice>? = btAdapter?.bondedDevices
         val deviceList : ArrayList<BluetoothDevice> = ArrayList()
-        pairedDevices?.forEach { device ->
-            val deviceName = device.name
-            val deviceHardwareAddress = device.address // MAC Address
-        }
+        var recyclerView: RecyclerView
+        var viewAdapter: RecyclerView.Adapter<*>
+        var viewManager: RecyclerView.LayoutManager
+
+//        pairedDevices?.forEach { device ->
+//             val deviceName = device.name
+//             val deviceHardwareAddress = device.address // MAC Address
+//        }
         if (pairedDevices?.isNotEmpty()!!) {
             for (device in pairedDevices) {
                 deviceList.add(device)
@@ -50,7 +75,13 @@ class DeviceSelectActivity : AppCompatActivity() {
             toast("No devices paired")
         }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, deviceList)
+        viewManager = LinearLayoutManager(this)
+        viewAdapter = MyAdapter(deviceList)
 
+        recyclerView = findViewById<RecyclerView>(R.id.select_device_list).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
     }
 }
