@@ -3,8 +3,10 @@
 //#pragma LINK_INFO DERIVATIVE "mc9s12dg256b"
 //#include "main_asm.h"
 
+#define SERVO_SCALE_FACTOR 28   //scaling factor is divided by 100
+
 int init_servo(const unsigned short);
-int set_servo(const unsigned short, const unsigned short);
+int set_servo(const unsigned short, const short);
 void reset_all_servos();
 void stop_all_servos();
 
@@ -32,7 +34,7 @@ int init_servo(const unsigned short servo_num)  {
         case 3:
             if(SPI1CR1_SPE)
               return 2;
-            PWMPER23 = 6000;
+            PWMPER23 = 60000;
             set_servo(3, 50);
             PWME |= 0x0C;
             break;
@@ -40,7 +42,7 @@ int init_servo(const unsigned short servo_num)  {
         case 5:
             if(SPI2CR1_SPE)             //SPI2 and PWM 4-7 cannot run at the same time
               return 2;
-            PWMPER45 = 6000;
+            PWMPER45 = 60000;
             set_servo(5, 50);
             PWME |= 0x30;
             break;
@@ -48,7 +50,7 @@ int init_servo(const unsigned short servo_num)  {
         case 7:
             if(SPI2CR1_SPE)
               return 2;
-            PWMPER67 = 6000;
+            PWMPER67 = 60000;
             set_servo(7, 50);
             PWME |= 0xC0;
             break;
@@ -61,12 +63,14 @@ int init_servo(const unsigned short servo_num)  {
     return 0;
 }
 
-//servo_num number of servo, valid servo numbers 1,3,5,7
+//servo_num number of servo, valid servo numbers 1,3,5,7 aka PP pins
+// servo min=-100 max =100
 //return 0 = success, 1 = invalid servo number 
-int set_servo(const unsigned short servo_num, const unsigned short pos_input)  {
+int set_servo(const unsigned short servo_num, const short pos_input)  {
 
-    unsigned short new_pwm = (30*pos_input + 3000);     //new_pwm = 3000*(50/100) + 3000, where 3000 = 1ms
-    switch (servo_num)
+    int tmp = pos_input * 15 * SERVO_SCALE_FACTOR; //new_pwm = 4500 + input*15*scaling_factor,
+    short new_pwm = (4500 + tmp/100);                // where 3000 = 1ms and scaling_factor accounts for the max wheel speed
+    switch (servo_num)                                                  
     {
         case 1:
             PWMDTY01 = new_pwm;
