@@ -7,6 +7,7 @@
 //#include "main_asm.h"
 
 #define SERVO_SCALE_FACTOR 28   //scaling factor is divided by 100
+#define SERVO_INIT_VAL 0
 
 int init_servo(const unsigned short);
 int set_servo(const unsigned short, const short);
@@ -30,7 +31,7 @@ int init_servo(const unsigned short servo_num)  {
             if(SPI1CR1_SPE)              //SPI1 and PWM 1-3 cannot run at the same time 
               return 2;
             PWMPER01 = 60000;        //3MHz / 60,000 = 20ms
-            set_servo(1, 50);        //set servo to 50 percent
+            set_servo(1, SERVO_INIT_VAL);        //set servo to 50 percent
             PWME |= 0x03;            //enable pwm on port
             break;
 
@@ -38,7 +39,7 @@ int init_servo(const unsigned short servo_num)  {
             if(SPI1CR1_SPE)
               return 2;
             PWMPER23 = 60000;
-            set_servo(3, 50);
+            set_servo(3, SERVO_INIT_VAL);
             PWME |= 0x0C;
             break;
 
@@ -46,7 +47,7 @@ int init_servo(const unsigned short servo_num)  {
             if(SPI2CR1_SPE)             //SPI2 and PWM 4-7 cannot run at the same time
               return 2;
             PWMPER45 = 60000;
-            set_servo(5, 50);
+            set_servo(5, SERVO_INIT_VAL);
             PWME |= 0x30;
             break;
 
@@ -54,7 +55,7 @@ int init_servo(const unsigned short servo_num)  {
             if(SPI2CR1_SPE)
               return 2;
             PWMPER67 = 60000;
-            set_servo(7, 50);
+            set_servo(7, SERVO_INIT_VAL);
             PWME |= 0xC0;
             break;
 
