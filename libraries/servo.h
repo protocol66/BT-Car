@@ -7,7 +7,6 @@
 //#include "main_asm.h"
 
 #define SERVO_SCALE_FACTOR 28   //scaling factor is divided by 100
-#define SERVO_INIT_VAL 0
 
 int init_servo(const unsigned short);
 int set_servo(const unsigned short, const short);
@@ -18,7 +17,7 @@ void stop_all_servos();
 //valid servo numbers 1,3,5,7
 //return 0 = success, 1 = invalid servo number, 2 = SPI is running
 int init_servo(const unsigned short servo_num)  {
-
+    DDRP = 0xFF;
     PWMPOL = 0xFF;        //set duty cycle = on time
     PWMCLK = 0x00;        //set pwm 1 to use clock A, because reasons...
     PWMPRCLK = 0x33;      //set prescaler for both clock A and B to 24/8 = 3MHz
@@ -27,38 +26,38 @@ int init_servo(const unsigned short servo_num)  {
 
     switch (servo_num)
     {
-        case 1:
-            if(SPI1CR1_SPE)              //SPI1 and PWM 1-3 cannot run at the same time 
-              return 2;
+        case 1: {
+            // if(SPI1CR1_SPE)              //SPI1 and PWM 1-3 cannot run at the same time 
+            //   return 2;
             PWMPER01 = 60000;        //3MHz / 60,000 = 20ms
-            set_servo(1, SERVO_INIT_VAL);        //set servo to 50 percent
+            set_servo(1, 50);        //set servo to 50 percent
             PWME |= 0x03;            //enable pwm on port
             break;
-
-        case 3:
-            if(SPI1CR1_SPE)
-              return 2;
+        }
+        case 3: {
+            // if(SPI1CR1_SPE)
+            //   return 2;
             PWMPER23 = 60000;
-            set_servo(3, SERVO_INIT_VAL);
+            set_servo(3, 50);
             PWME |= 0x0C;
             break;
-
-        case 5:
-            if(SPI2CR1_SPE)             //SPI2 and PWM 4-7 cannot run at the same time
-              return 2;
+        }
+        case 5: {
+            // if(SPI2CR1_SPE)             //SPI2 and PWM 4-7 cannot run at the same time
+            //   return 2;
             PWMPER45 = 60000;
-            set_servo(5, SERVO_INIT_VAL);
+            set_servo(5, 50);
             PWME |= 0x30;
             break;
-
-        case 7:
-            if(SPI2CR1_SPE)
-              return 2;
+        }
+        case 7: {
+            // if(SPI2CR1_SPE)
+            //   return 2;
             PWMPER67 = 60000;
-            set_servo(7, SERVO_INIT_VAL);
+            set_servo(7, 50);
             PWME |= 0xC0;
             break;
-
+        }
         default:
             return 1;
             break;
