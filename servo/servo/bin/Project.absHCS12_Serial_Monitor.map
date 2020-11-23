@@ -1,5 +1,5 @@
 *** EVALUATION ***
-PROGRAM "C:\users\jon\MicroComp\project\servo\bin\Project.absHCS12_Serial_Monitor.abs"
+PROGRAM "C:\BTC-Car\servo\servo\bin\Project.absHCS12_Serial_Monitor.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -21,21 +21,21 @@ rtshc12.c.o (ansibi.lib)                Model: BANKED,        Lang: ANSI-C
 STARTUP SECTION
 ---------------------------------------------------------------------------------------------
 Entry point: 0xC000 (_Startup)
-_startupData is allocated at 0xC00B and uses 6 Bytes
+_startupData is allocated at 0xC015 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     0
-  _Copy    *toCopyDownBeg 0xC034
+  _Copy    *toCopyDownBeg 0xC039
 } _startupData;
 
 *********************************************************************************************
 SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
-.init                             11     R     0xC000     0xC00A   ROM_C000
-.startData                        10     R     0xC00B     0xC014   ROM_C000
-NON_BANKED                        31     R     0xC015     0xC033   ROM_C000
-.copy                              2     R     0xC034     0xC035   ROM_C000
-.text                            440     R   0x308000   0x3081B7   PAGE_30
+.init                             21     R     0xC000     0xC014   ROM_C000
+.startData                        10     R     0xC015     0xC01E   ROM_C000
+NON_BANKED                        26     R     0xC01F     0xC038   ROM_C000
+.copy                              2     R     0xC039     0xC03A   ROM_C000
+.text                            384     R   0x308000   0x30817F   PAGE_30
 .stack                           256   R/W     0x1000     0x10FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -381,7 +381,7 @@ NON_BANKED                        31     R     0xC015     0xC033   ROM_C000
 .vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):         1F0 (dec:      496)
+READ_ONLY (R):         1BD (dec:      445)
 READ_WRITE (R/W):      100 (dec:      256)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -464,7 +464,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _ATD0STAT1                                  8B       1       1       0   .abs_section_8b
      _ATD0DIEN                                   8D       1       1       0   .abs_section_8d
      _PORTAD0                                    8F       1       1       0   .abs_section_8f
-     _PWME                                       A0       1       1       5   .abs_section_a0
+     _PWME                                       A0       1       1       6   .abs_section_a0
      _PWMPOL                                     A1       1       1       2   .abs_section_a1
      _PWMCLK                                     A2       1       1       2   .abs_section_a2
      _PWMPRCLK                                   A3       1       1       2   .abs_section_a3
@@ -495,12 +495,12 @@ MODULE:                 -- mc9s12dg256.c.o --
      _IBCR                                       E2       1       1       0   .abs_section_e2
      _IBSR                                       E3       1       1       0   .abs_section_e3
      _IBDR                                       E4       1       1       0   .abs_section_e4
-     _SPI1CR1                                    F0       1       1       2   .abs_section_f0
+     _SPI1CR1                                    F0       1       1       0   .abs_section_f0
      _SPI1CR2                                    F1       1       1       0   .abs_section_f1
      _SPI1BR                                     F2       1       1       0   .abs_section_f2
      _SPI1SR                                     F3       1       1       0   .abs_section_f3
      _SPI1DR                                     F5       1       1       0   .abs_section_f5
-     _SPI2CR1                                    F8       1       1       2   .abs_section_f8
+     _SPI2CR1                                    F8       1       1       0   .abs_section_f8
      _SPI2CR2                                    F9       1       1       0   .abs_section_f9
      _SPI2BR                                     FA       1       1       0   .abs_section_fa
      _SPI2SR                                     FB       1       1       0   .abs_section_fb
@@ -601,7 +601,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _MODRR                                     257       1       1       0   .abs_section_257
      _PTP                                       258       1       1       0   .abs_section_258
      _PTIP                                      259       1       1       0   .abs_section_259
-     _DDRP                                      25A       1       1       0   .abs_section_25a
+     _DDRP                                      25A       1       1       1   .abs_section_25a
      _RDRP                                      25B       1       1       0   .abs_section_25b
      _PERP                                      25C       1       1       0   .abs_section_25c
      _PPSP                                      25D       1       1       0   .abs_section_25d
@@ -741,25 +741,24 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     init_servo                              308000      81     129       2   .text       
-     set_servo                               308081      3B      59       6   .text       
-     stop_all_servos                         3080BC      31      49       2   .text       
-     reset_all_servos                        3080ED      17      23       2   .text       
-     set_clock_24mhz                         308104      15      21       2   .text       
-     main                                    308119      76     118       2   .text       
+     init_servo                              308000      6D     109       2   .text       
+     set_servo                               30806D      41      65       6   .text       
+     stop_all_servos                         3080AE      31      49       2   .text       
+     reset_all_servos                        3080DF      17      23       2   .text       
+     set_clock_24mhz                         3080F6      15      21       2   .text       
+     main                                    30810B      4C      76       2   .text       
 - VARIABLES:
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    30818F      29      41       2   .text       
-     _Startup                                  C000       B      11       0   .init       
+     Init                                    308157      29      41       2   .text       
+     _Startup                                  C000      15      21       0   .init       
 - VARIABLES:
-     _startupData                              C00B       6       6       3   .startData  
+     _startupData                              C015       6       6       3   .startData  
 - LABELS:
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- rtshc12.c.o (ansibi.lib) --
 - PROCEDURES:
-     _LINC                                     C015       5       5       1   NON_BANKED  
-     _CASE_SEARCH_8_BYTE                       C01A      1A      26       2   NON_BANKED  
+     _CASE_SEARCH_8_BYTE                       C01F      1A      26       2   NON_BANKED  
 - VARIABLES:
 
 *********************************************************************************************
@@ -767,9 +766,9 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                     0    399      0
-  Start12.c.o                                  0     52      0
-  rtshc12.c.o (ansibi.lib)                     0     31      0
+  main.c.o                                     0    343      0
+  Start12.c.o                                  0     62      0
+  rtshc12.c.o (ansibi.lib)                     0     26      0
   other                                      256     12      2
 
 *********************************************************************************************
@@ -781,7 +780,7 @@ SECTION: ".text"
 SECTION: ".init"
   _Startup 
 SECTION: "NON_BANKED"
-  _LINC _CASE_SEARCH_8_BYTE 
+  _CASE_SEARCH_8_BYTE 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1566,7 +1565,7 @@ OBJECT LIST SORTED BY ADDRESS
      _ATD0DR5                                    9A       2       2       0   .abs_section_9a
      _ATD0DR6                                    9C       2       2       0   .abs_section_9c
      _ATD0DR7                                    9E       2       2       0   .abs_section_9e
-     _PWME                                       A0       1       1       5   .abs_section_a0
+     _PWME                                       A0       1       1       6   .abs_section_a0
      _PWMPOL                                     A1       1       1       2   .abs_section_a1
      _PWMCLK                                     A2       1       1       2   .abs_section_a2
      _PWMPRCLK                                   A3       1       1       2   .abs_section_a3
@@ -1611,12 +1610,12 @@ OBJECT LIST SORTED BY ADDRESS
      _IBCR                                       E2       1       1       0   .abs_section_e2
      _IBSR                                       E3       1       1       0   .abs_section_e3
      _IBDR                                       E4       1       1       0   .abs_section_e4
-     _SPI1CR1                                    F0       1       1       2   .abs_section_f0
+     _SPI1CR1                                    F0       1       1       0   .abs_section_f0
      _SPI1CR2                                    F1       1       1       0   .abs_section_f1
      _SPI1BR                                     F2       1       1       0   .abs_section_f2
      _SPI1SR                                     F3       1       1       0   .abs_section_f3
      _SPI1DR                                     F5       1       1       0   .abs_section_f5
-     _SPI2CR1                                    F8       1       1       2   .abs_section_f8
+     _SPI2CR1                                    F8       1       1       0   .abs_section_f8
      _SPI2CR2                                    F9       1       1       0   .abs_section_f9
      _SPI2BR                                     FA       1       1       0   .abs_section_fa
      _SPI2SR                                     FB       1       1       0   .abs_section_fb
@@ -1729,7 +1728,7 @@ OBJECT LIST SORTED BY ADDRESS
      _MODRR                                     257       1       1       0   .abs_section_257
      _PTP                                       258       1       1       0   .abs_section_258
      _PTIP                                      259       1       1       0   .abs_section_259
-     _DDRP                                      25A       1       1       0   .abs_section_25a
+     _DDRP                                      25A       1       1       1   .abs_section_25a
      _RDRP                                      25B       1       1       0   .abs_section_25b
      _PERP                                      25C       1       1       0   .abs_section_25c
      _PPSP                                      25D       1       1       0   .abs_section_25d
@@ -1810,16 +1809,15 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
-     _Startup                                  C000       B      11       0   .init       
-     _LINC                                     C015       5       5       1   NON_BANKED  
-     _CASE_SEARCH_8_BYTE                       C01A      1A      26       2   NON_BANKED  
-     init_servo                              308000      81     129       2   .text       
-     set_servo                               308081      3B      59       6   .text       
-     stop_all_servos                         3080BC      31      49       2   .text       
-     reset_all_servos                        3080ED      17      23       2   .text       
-     set_clock_24mhz                         308104      15      21       2   .text       
-     main                                    308119      76     118       2   .text       
-     Init                                    30818F      29      41       2   .text       
+     _Startup                                  C000      15      21       0   .init       
+     _CASE_SEARCH_8_BYTE                       C01F      1A      26       2   NON_BANKED  
+     init_servo                              308000      6D     109       2   .text       
+     set_servo                               30806D      41      65       6   .text       
+     stop_all_servos                         3080AE      31      49       2   .text       
+     reset_all_servos                        3080DF      17      23       2   .text       
+     set_clock_24mhz                         3080F6      15      21       2   .text       
+     main                                    30810B      4C      76       2   .text       
+     Init                                    308157      29      41       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1827,10 +1825,11 @@ UNUSED-OBJECTS SECTION
 NOT USED PROCEDURES
 rtshc12.c.o (ansibi.lib):
   _BSHL _BSHRS _BSHRU _BDIVMODU _BDIVMODS _ISHL _ISHRU _ISHRS _LSHL _LSHRU 
-  _LSHRS _LADD _LSUB _LAND _LOR _LXOR _LCMP _LCMP_P _LCMP_PP _LNEG _LCOM _LDEC 
-  _LMUL _LMULU16x32 _LMULS16x32 _lDivMod _LDIVU _NEG_P _LDIVS _LMODU _LMODS 
-  _ILSEXT _COPY _CASE_DIRECT _CASE_DIRECT_BYTE _CASE_CHECKED _CASE_CHECKED_BYTE 
-  _CASE_SEARCH _CASE_SEARCH_BYTE _CASE_SEARCH_8 _FCALL _FPCMP 
+  _LSHRS _LADD _LSUB _LAND _LOR _LXOR _LCMP _LCMP_P _LCMP_PP _LNEG _LCOM _LINC 
+  _LDEC _LMUL _LMULU16x32 _LMULS16x32 _lDivMod _LDIVU _NEG_P _LDIVS _LMODU 
+  _LMODS _ILSEXT _COPY _CASE_DIRECT _CASE_DIRECT_BYTE _CASE_CHECKED 
+  _CASE_CHECKED_BYTE _CASE_SEARCH _CASE_SEARCH_BYTE _CASE_SEARCH_8 _FCALL 
+  _FPCMP 
 NOT USED VARIABLES
 rtshc12.c.o (ansibi.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
@@ -1838,7 +1837,7 @@ rtshc12.c.o (ansibi.lib):
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC034 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC039 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1847,8 +1846,8 @@ OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK Init main 
 init_servo                USES _PWMPOL _PWMCLK _PWMPRCLK _PWMCAE _PWMCTL 
-                                _CASE_SEARCH_8_BYTE _SPI1CR1 _PWMPER01 _PWME _PWMPER23 _SPI2CR1 
-                                _PWMPER45 _PWMPER67 set_servo 
+                                _CASE_SEARCH_8_BYTE _PWMPER01 _PWME _PWMPER23 _PWMPER45 _PWMPER67 
+                                set_servo 
 set_servo                 USES _CASE_SEARCH_8_BYTE _PWMDTY01 _PWMDTY23 
                                 _PWMDTY45 _PWMDTY67 
 stop_all_servos           USES _PWMPER01 _PWMPER23 _PWMPER45 _PWMPER67 
@@ -1856,8 +1855,8 @@ stop_all_servos           USES _PWMPER01 _PWMPER23 _PWMPER45 _PWMPER67
 reset_all_servos          USES _PWME _PWMPOL _PWMCLK _PWMPRCLK _PWMCAE _PWMCTL 
                                 stop_all_servos 
 set_clock_24mhz           USES _CLKSEL _PLLCTL _SYNR _REFDV _CRGFLG 
-main                      USES set_clock_24mhz reset_all_servos init_servo 
-                                set_servo _LINC 
+main                      USES set_clock_24mhz _DDRP reset_all_servos 
+                                init_servo _PWME set_servo 
 Init                      USES _startupData 
 
 *********************************************************************************************
@@ -1882,9 +1881,7 @@ DEPENDENCY TREE
  |  |     +- _CASE_SEARCH_8_BYTE  (see above)
  |  |        
  |  +- set_servo            (see above)
- |  |  
- |  +- _LINC               
- |       
+ |     
  +- _Startup            
     | 
     +- Init                
@@ -1898,5 +1895,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 6
-Total size of all blocks to be downloaded: 496
+Total size of all blocks to be downloaded: 445
 
