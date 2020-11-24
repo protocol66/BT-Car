@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BTC-Car</string>
+    <string name="steering">Steering</string>
+    <string name="throttle">Throttle</string>
+    <string name="refresh">refresh</string>
+    <string name="button">Button</string>
+</resources>

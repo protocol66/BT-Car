@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="select_device_list" type="id" />
-    <item name="select_device_refresh" type="id" />
+    <item name="button" type="id" />
+    <item name="forwardMax" type="id" />
+    <item name="fRightMax" type="id" />
+    <item name="donutLeft" type="id" />
+    <item name="forward" type="id" />
 </resources>
