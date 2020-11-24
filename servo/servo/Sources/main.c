@@ -3,8 +3,10 @@
 //#pragma LINK_INFO DERIVATIVE "mc9s12dg256b"
 //#include "main_asm.h"
 
+#define SERVO_SCALE_FACTOR 28   //scaling factor is divided by 100
+
 int init_servo(const unsigned short);
-int set_servo(const unsigned short, const unsigned short);
+int set_servo(const unsigned short, const short);
 void reset_all_servos();
 void stop_all_servos();
 
@@ -12,7 +14,7 @@ void stop_all_servos();
 //valid servo numbers 1,3,5,7
 //return 0 = success, 1 = invalid servo number, 2 = SPI is running
 int init_servo(const unsigned short servo_num)  {
-
+    DDRP = 0xFF;
     PWMPOL = 0xFF;        //set duty cycle = on time
     PWMCLK = 0x00;        //set pwm 1 to use clock A, because reasons...
     PWMPRCLK = 0x33;      //set prescaler for both clock A and B to 24/8 = 3MHz
@@ -21,38 +23,38 @@ int init_servo(const unsigned short servo_num)  {
 
     switch (servo_num)
     {
-        case 1:
-            if(SPI1CR1_SPE)              //SPI1 and PWM 1-3 cannot run at the same time 
-              return 2;
+        case 1: {
+            // if(SPI1CR1_SPE)              //SPI1 and PWM 1-3 cannot run at the same time 
+            //   return 2;
             PWMPER01 = 60000;        //3MHz / 60,000 = 20ms
             set_servo(1, 50);        //set servo to 50 percent
             PWME |= 0x03;            //enable pwm on port
             break;
-
-        case 3:
-            if(SPI1CR1_SPE)
-              return 2;
-            PWMPER23 = 6000;
+        }
+        case 3: {
+            // if(SPI1CR1_SPE)
+            //   return 2;
+            PWMPER23 = 60000;
             set_servo(3, 50);
             PWME |= 0x0C;
             break;
-
-        case 5:
-            if(SPI2CR1_SPE)             //SPI2 and PWM 4-7 cannot run at the same time
-              return 2;
-            PWMPER45 = 6000;
+        }
+        case 5: {
+            // if(SPI2CR1_SPE)             //SPI2 and PWM 4-7 cannot run at the same time
+            //   return 2;
+            PWMPER45 = 60000;
             set_servo(5, 50);
             PWME |= 0x30;
             break;
-
-        case 7:
-            if(SPI2CR1_SPE)
-              return 2;
-            PWMPER67 = 6000;
+        }
+        case 7: {
+            // if(SPI2CR1_SPE)
+            //   return 2;
+            PWMPER67 = 60000;
             set_servo(7, 50);
             PWME |= 0xC0;
             break;
-
+        }
         default:
             return 1;
             break;
@@ -61,12 +63,14 @@ int init_servo(const unsigned short servo_num)  {
     return 0;
 }
 
-//servo_num number of servo, valid servo numbers 1,3,5,7
+//servo_num number of servo, valid servo numbers 1,3,5,7 aka PP pins
+// servo min=-100 max =100
 //return 0 = success, 1 = invalid servo number 
-int set_servo(const unsigned short servo_num, const unsigned short pos_input)  {
+int set_servo(const unsigned short servo_num, const short pos_input)  {
 
-    unsigned short new_pwm = (30*pos_input + 3000);     //new_pwm = 3000*(50/100) + 3000, where 3000 = 1ms
-    switch (servo_num)
+    int tmp = pos_input * 15 * SERVO_SCALE_FACTOR; //new_pwm = 4500 + input*15*scaling_factor,
+    short new_pwm = (4500 + tmp/100);                // where 3000 = 1ms and scaling_factor accounts for the max wheel speed
+    switch (servo_num)                                                  
     {
         case 1:
             PWMDTY01 = new_pwm;
@@ -147,33 +151,22 @@ void main(void) {
 	
 	
   set_clock_24mhz();
+  DDRP = 0xff;
     
   reset_all_servos();
   init_servo(1);
-  set_servo(1,50);
+  init_servo(3);
+  init_servo(5);
+  init_servo(7);
+  set_servo(1,70);
+  set_servo(3,70);
+  set_servo(5,70);
+  set_servo(7,70);
+
 
 	EnableInterrupts;
   
 	while(1)  {
-	    
-	    for(i = 0; i < 7000;i++){
-	    }
-	    
-	    if(up == 1) {
-	      counter++;
-	      if(counter >= 100)  {
-	        counter = 100;
-	        up = 0;
-	      }
-	    } else {
-	       counter--;
-	       if(counter <= 0)  {
-	         counter = 0;
-	         up = 1;
-	       }
-	    }
-	    
-	    set_servo(1,counter);
 	    
 	}
 

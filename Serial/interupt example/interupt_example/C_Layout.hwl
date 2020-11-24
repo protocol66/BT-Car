@@ -1,0 +1,32 @@
+OPEN source 0 0 60 39
+Source < attributes MARKS off
+OPEN assembly 60 0 40 31
+Assembly < attributes ADR on,CODE off,ABSADR on,SYMB off,TOPPC 0xC000
+OPEN procedure 0 39 60 17
+Procedure < attributes VALUES on,TYPES off
+OPEN register 60 31 40 25
+Register < attributes FORMAT AUTO,COMPLEMENT None
+OPEN memory 60 56 40 22
+Memory < attributes FORMAT hex,COMPLEMENT None,WORD 1,ASC on,ADR on,ADDRESS 0x80
+OPEN data 0 56 60 22
+Data:1 < attributes SCOPE global,COMPLEMENT None,FORMAT Symb,MODE automatic,UPDATERATE 10,NAMEWIDTH 16
+OPEN data 0 78 60 22
+Data:2 < attributes SCOPE local,COMPLEMENT None,FORMAT Symb,MODE automatic,UPDATERATE 10,NAMEWIDTH 16
+OPEN command 60 78 40 22
+Command < attributes CACHESIZE 1000
+OPEN visualizationtool 7 9 83 70
+VisualizationTool< Attributes [stEditM="0",swRefresh="3",refCycles="10000"]
+VisualizationTool< LoadInstrument Chart[BoundX="14",BoundY="18",BoundH="149",BoundW="170",Port_PortKind="5",Port="pwmChannel[0]",RangeHigh="2",swUnit="1",unitSize="1000",NOFUnits="1000",HIndexStep="200",VIndexStep="1"]
+VisualizationTool< LoadInstrument Bar[BoundX="201",BoundY="40",Port_PortKind="2",Port="_PWMPER01.Overlap_STR.PWMPER0STR.Byte"]
+VisualizationTool< LoadInstrument Text[BoundX="201",BoundY="62",BoundH="18",BoundW="16",swBBox="0",FName="0"]
+VisualizationTool< LoadInstrument Text[BoundX="326",BoundY="62",BoundH="18",BoundW="25",swBBox="0",FName="255"]
+VisualizationTool< LoadInstrument Text[BoundX="201",BoundY="18",BoundH="18",BoundW="53",swBBox="0",FName="Period"]
+VisualizationTool< LoadInstrument Bar[BoundX="201",BoundY="109",Port_PortKind="2",Port="pwmRatio",RangeHigh="65535",colBar="16711680"]
+VisualizationTool< LoadInstrument Text[BoundX="201",BoundY="131",BoundH="18",BoundW="16",swBBox="0",FName="0%"]
+VisualizationTool< LoadInstrument Text[BoundX="322",BoundY="131",BoundH="18",BoundW="29",swBBox="0",FName="100%"]
+VisualizationTool< LoadInstrument Text[BoundX="201",BoundY="87",BoundH="18",BoundW="67",swBBox="0",FName="Duty Time"]
+VisualizationTool< ResetVT Undo
+bckcolor 50331647
+font 'Courier New' 9 BLACK
+AUTOSIZE on
+ACTIVATE Data:2 Command Procedure Data:1 Source Register Assembly Memory VisualizationTool 
