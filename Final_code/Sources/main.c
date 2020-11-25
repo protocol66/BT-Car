@@ -6,17 +6,18 @@
 #include "control.h"
 
 
-void interrupt 7 RTI_ISR()  {
-    clear_RTI_flag();
-    control(serial_recieve());
-}
+//void interrupt 7 RTI_ISR()  {
+//    control(serial_recieve());
+//    clear_RTI_flag();
+//}
 
 void main(void) {
+    long i = 0;
     /* put your own code here */
-    PLL_init();
-    seg7_disable();
-    led_disable();
-    RTI_init();
+    set_clock_24mhz();
+    // seg7_disable();
+    // led_disable();
+    // RTI_init();
     RTICTL = 0x7F;
 
     reset_all_servos();
@@ -30,7 +31,9 @@ void main(void) {
     EnableInterrupts;
 
     while(1)  {
-        _FEED_COP();
+        control(serial_recieve());
+        for (i = 0; i < 60000; i++);
+            _FEED_COP();
     }
 }
 
