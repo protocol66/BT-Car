@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "BTC-Car"
+rootProject.name = "BTCar"
