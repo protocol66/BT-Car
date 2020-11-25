@@ -1,8 +1,8 @@
 #ifndef SERVO_H
 #define SERVO_H
 
-#include <hidef.h>      /* common defines and macros */
-#include "derivative.h"      /* derivative-specific definitions */
+//#include <hidef.h>      /* common defines and macros */
+//#include "derivative.h"      /* derivative-specific definitions */
 //#pragma LINK_INFO DERIVATIVE "mc9s12dg256b"
 //#include "main_asm.h"
 
