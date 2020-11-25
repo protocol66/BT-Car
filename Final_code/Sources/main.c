@@ -19,6 +19,13 @@ void main(void) {
     RTI_init();
     RTICTL = 0x7F;
 
+    init_servo(1);          // initialize servos
+    init_servo(3);
+    init_servo(5);
+    init_servo(7);
+
+    serial_init();
+
     EnableInterrupts;
 
     while(1)  {
