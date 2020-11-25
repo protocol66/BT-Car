@@ -19,6 +19,7 @@ void main(void) {
     RTI_init();
     RTICTL = 0x7F;
 
+    reset_all_servos();
     init_servo(1);          // initialize servos
     init_servo(3);
     init_servo(5);

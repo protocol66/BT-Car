@@ -4,7 +4,7 @@
 #include "servo.h"
 
 void control(unsigned char input)  {
-	if(input == 1)			// forward slow
+	if(input == 0x04)			// forward slow
 	{					         	
 		set_servo(1,50);
 		set_servo(3,-43);
@@ -12,7 +12,7 @@ void control(unsigned char input)  {
 		set_servo(7,-43);
 	}
 	
-	else if(input == 2)			// forward fast
+	else if(input == 0x02)			// forward fast
 	{					         	
 		set_servo(1,-100);
 		set_servo(3,90);
@@ -20,7 +20,7 @@ void control(unsigned char input)  {
 		set_servo(7,90);
 	}
 
-	else if(input == 3)		// turn left slow
+	else if(input == 0x0C)		// turn left slow
 	{					          	
 		set_servo(1,0);
 		set_servo(3,-43);
@@ -28,7 +28,7 @@ void control(unsigned char input)  {
 		set_servo(7,-43);
 	}
 	
-	else if(input == 4)		// turn left fast
+	else if(input == 0x0A)		// turn left fast
 	{					          	
 		set_servo(1,0);
 		set_servo(3,90);
@@ -36,7 +36,7 @@ void control(unsigned char input)  {
 		set_servo(7,90);
 	}
 
-	else if(input == 5)		// turn right slow
+	else if(input == 0x14)		// turn right slow
 	{					          	
 		set_servo(1,50);
 		set_servo(3,0);
@@ -44,7 +44,7 @@ void control(unsigned char input)  {
 		set_servo(7,0);
 	}
 	
-	else if(input == 6)		// turn right fast
+	else if(input == 0x12)		// turn right fast
 	{					          	
 		set_servo(1,-100);
 		set_servo(3,0);
@@ -52,7 +52,7 @@ void control(unsigned char input)  {
 		set_servo(7,0);
 	}
 
-	else if(input == 7)		// backwards slow
+	else if(input == 0x08)		// backwards slow
 	{					          	
 		set_servo(1,-50);
 		set_servo(3,43);
@@ -60,7 +60,7 @@ void control(unsigned char input)  {
 		set_servo(7,43);
 	} 
 
-	else if(input == 8)		// backwards fast
+	else if(input == 0x06)		// backwards fast
 	{					          	
 		set_servo(1,100);
 		set_servo(3,-90);
@@ -68,7 +68,7 @@ void control(unsigned char input)  {
 		set_servo(7,-90);
 	}
 
-	else if(input == 9)		// backwards left slow
+	else if(input == 0x18)		// backwards left slow
 	{					          	
 		set_servo(1,0);
 		set_servo(3,43);
@@ -76,7 +76,7 @@ void control(unsigned char input)  {
 		set_servo(7,43);
 	} 
 
-	else if(input == 10)	// backwards left fast
+	else if(input == 0x16)	// backwards left fast
 	{					          	
 		set_servo(1,0);
 		set_servo(3,-90);
@@ -84,7 +84,7 @@ void control(unsigned char input)  {
 		set_servo(7,-90);
 	}
 	
-	else if(input == 11)	// backwards right slow
+	else if(input == 0x1C)	// backwards right slow
 	{					          	
 		set_servo(1,-50);
 		set_servo(3,0);
@@ -92,7 +92,7 @@ void control(unsigned char input)  {
 		set_servo(7,0);
 	} 
 
-	else if(input == 12)	// backwards right fast
+	else if(input == 0x1A)	// backwards right fast
 	{					          	
 		set_servo(1,100);
 		set_servo(3,0);
@@ -100,7 +100,7 @@ void control(unsigned char input)  {
 		set_servo(7,0);
 	}
 	
-	else if(input == 13)	// donut left
+	else if(input == 0x22)	// donut left
 	{					          	
 		set_servo(1,-100);
 		set_servo(3,90);
@@ -108,7 +108,7 @@ void control(unsigned char input)  {
 		set_servo(7,90);
 	} 
 
-	else if(input == 14)	// donut right
+	else if(input == 0x24)	// donut right
 	{					          	
 		set_servo(1,-100);
 		set_servo(3,90);
