@@ -12,9 +12,9 @@ Linker      : SmartLinker V-5.0.40 Build 10203, Jul 23 2010
 *********************************************************************************************
 FILE SECTION
 ---------------------------------------------------------------------------------------------
-main.c.o                                Model: BANKED,        Lang: ANSI-C
 mc9s12dg256.c.o                         Model: BANKED,        Lang: ANSI-C
 Start12.c.o                             Model: BANKED,        Lang: ANSI-C
+main.c.o                                Model: BANKED,        Lang: ANSI-C
 
 *********************************************************************************************
 STARTUP SECTION
@@ -23,8 +23,8 @@ Entry point: 0xC000 (_Startup)
 _startupData is allocated at 0xC00B and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x1100     16
-  _Copy    *toCopyDownBeg 0xC015
+  _Range   pZeroOut       0x1100     9
+  _Copy    *toCopyDownBeg 0xC0A0
 } _startupData;
 
 *********************************************************************************************
@@ -33,10 +33,11 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             11     R     0xC000     0xC00A   ROM_C000
 .startData                        10     R     0xC00B     0xC014   ROM_C000
-.copy                             17     R     0xC015     0xC025   ROM_C000
-.text                            115     R   0x308000   0x308072   PAGE_30
+NON_BANKED                       139     R     0xC015     0xC09F   ROM_C000
+.copy                             11     R     0xC0A0     0xC0AA   ROM_C000
+.text                             41     R   0x308000   0x308028   PAGE_30
 .stack                           256   R/W     0x1000     0x10FF   RAM
-.data                             12   R/W     0x1100     0x110B   RAM
+.data                              6   R/W     0x1100     0x1105   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -378,12 +379,13 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_17e                   2   N/I      0x17E      0x17F   .absSeg338
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
-.common                            4   R/W     0x110C     0x110F   RAM
-.vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
+.abs_section_ffd4                  2     R     0xFFD4     0xFFD5   .absSeg341
+.common                            3   R/W     0x1106     0x1108   RAM
+.vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):          9B (dec:      155)
-READ_WRITE (R/W):      110 (dec:      272)
+READ_ONLY (R):          D8 (dec:      216)
+READ_WRITE (R/W):      109 (dec:      265)
 NO_INIT (N/I):         190 (dec:      400)
 
 *********************************************************************************************
@@ -396,16 +398,6 @@ VECTOR-ALLOCATION SECTION
 OBJECT-ALLOCATION SECTION
      Name               Module                 Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
-MODULE:                 -- main.c.o --
-- PROCEDURES:
-     SCI1Config                              308000      16      22       2   .text       
-     SCI1Tx                                  308016       6       6       2   .text       
-     main                                    30801C      2E      46       2   .text       
-- VARIABLES:
-     SCI1String                                1100       C      12       1   .data       
-     SCI1IniTx                                 110C       1       1       3   .common     
-     SCI1Stringp                               110D       2       2       2   .common     
-     Stringcase                                110F       1       1       1   .common     
 MODULE:                 -- mc9s12dg256.c.o --
 - PROCEDURES:
 - VARIABLES:
@@ -437,12 +429,12 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PPAGE                                      30       1       1       0   .abs_section_30
      _PORTK                                      32       1       1       0   .abs_section_32
      _DDRK                                       33       1       1       0   .abs_section_33
-     _SYNR                                       34       1       1       0   .abs_section_34
-     _REFDV                                      35       1       1       0   .abs_section_35
-     _CRGFLG                                     37       1       1       0   .abs_section_37
+     _SYNR                                       34       1       1       1   .abs_section_34
+     _REFDV                                      35       1       1       1   .abs_section_35
+     _CRGFLG                                     37       1       1       1   .abs_section_37
      _CRGINT                                     38       1       1       0   .abs_section_38
-     _CLKSEL                                     39       1       1       0   .abs_section_39
-     _PLLCTL                                     3A       1       1       0   .abs_section_3a
+     _CLKSEL                                     39       1       1       2   .abs_section_39
+     _PLLCTL                                     3A       1       1       1   .abs_section_3a
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       0   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
@@ -491,11 +483,11 @@ MODULE:                 -- mc9s12dg256.c.o --
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
      _SCI0DRL                                    CF       1       1       0   .abs_section_cf
      _SCI1CR1                                    D2       1       1       1   .abs_section_d2
-     _SCI1CR2                                    D3       1       1       2   .abs_section_d3
-     _SCI1SR1                                    D4       1       1       1   .abs_section_d4
+     _SCI1CR2                                    D3       1       1       3   .abs_section_d3
+     _SCI1SR1                                    D4       1       1       5   .abs_section_d4
      _SCI1SR2                                    D5       1       1       0   .abs_section_d5
      _SCI1DRH                                    D6       1       1       0   .abs_section_d6
-     _SCI1DRL                                    D7       1       1       1   .abs_section_d7
+     _SCI1DRL                                    D7       1       1       3   .abs_section_d7
      _SPI0CR1                                    D8       1       1       0   .abs_section_d8
      _SPI0CR2                                    D9       1       1       0   .abs_section_d9
      _SPI0BR                                     DA       1       1       0   .abs_section_da
@@ -752,33 +744,45 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    30804A      29      41       2   .text       
+     Init                                    308000      29      41       2   .text       
      _Startup                                  C000       B      11       0   .init       
 - VARIABLES:
      _startupData                              C00B       6       6       3   .startData  
 - LABELS:
      __SEG_END_SSTACK                          1100       0       0       1               
+MODULE:                 -- main.c.o --
+- PROCEDURES:
+     SCI1Isr                                   C015      2C      44       1   NON_BANKED  
+     serial_init                               C041      16      22       2   NON_BANKED  
+     serial_send                               C057       6       6       4   NON_BANKED  
+     set_clock_24mhz                           C05D      15      21       2   NON_BANKED  
+     main                                      C072      2E      46       2   NON_BANKED  
+- VARIABLES:
+     SCI1String                                1100       6       6       1   .data       
+     _Vector_21                                FFD4       2       2       0   .abs_section_ffd4
+     SCI1Stringp                               1106       2       2       5   .common     
+     tx_status                                 1108       1       1       4   .common     
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
-  main.c.o                                    16     74      0
   mc9s12dg256.c.o                            400      0      0
   Start12.c.o                                  0     52      0
-  other                                      256     12     17
+  main.c.o                                     9    139      2
+  other                                      256     12     11
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  SCI1Config SCI1Tx main Init 
+  Init 
 SECTION: ".data"
   SCI1String 
 SECTION: ".init"
   _Startup 
-SECTION: ".common"
-  SCI1IniTx SCI1Stringp Stringcase 
+SECTION: "NON_BANKED"
+  SCI1Isr serial_init serial_send set_clock_24mhz main 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1461,6 +1465,10 @@ SECTION: ".abs_section_2ae"
   _CAN4RXTSR 
 SECTION: ".abs_section_2be"
   _CAN4TXTSR 
+SECTION: ".abs_section_ffd4"
+  _Vector_21 
+SECTION: ".common"
+  SCI1Stringp tx_status 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
@@ -1497,12 +1505,12 @@ OBJECT LIST SORTED BY ADDRESS
      _PPAGE                                      30       1       1       0   .abs_section_30
      _PORTK                                      32       1       1       0   .abs_section_32
      _DDRK                                       33       1       1       0   .abs_section_33
-     _SYNR                                       34       1       1       0   .abs_section_34
-     _REFDV                                      35       1       1       0   .abs_section_35
-     _CRGFLG                                     37       1       1       0   .abs_section_37
+     _SYNR                                       34       1       1       1   .abs_section_34
+     _REFDV                                      35       1       1       1   .abs_section_35
+     _CRGFLG                                     37       1       1       1   .abs_section_37
      _CRGINT                                     38       1       1       0   .abs_section_38
-     _CLKSEL                                     39       1       1       0   .abs_section_39
-     _PLLCTL                                     3A       1       1       0   .abs_section_3a
+     _CLKSEL                                     39       1       1       2   .abs_section_39
+     _PLLCTL                                     3A       1       1       1   .abs_section_3a
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       0   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
@@ -1593,11 +1601,11 @@ OBJECT LIST SORTED BY ADDRESS
      _SCI0DRL                                    CF       1       1       0   .abs_section_cf
      _SCI1BD                                     D0       2       2       2   .abs_section_d0
      _SCI1CR1                                    D2       1       1       1   .abs_section_d2
-     _SCI1CR2                                    D3       1       1       2   .abs_section_d3
-     _SCI1SR1                                    D4       1       1       1   .abs_section_d4
+     _SCI1CR2                                    D3       1       1       3   .abs_section_d3
+     _SCI1SR1                                    D4       1       1       5   .abs_section_d4
      _SCI1SR2                                    D5       1       1       0   .abs_section_d5
      _SCI1DRH                                    D6       1       1       0   .abs_section_d6
-     _SCI1DRL                                    D7       1       1       1   .abs_section_d7
+     _SCI1DRL                                    D7       1       1       3   .abs_section_d7
      _SPI0CR1                                    D8       1       1       0   .abs_section_d8
      _SPI0CR2                                    D9       1       1       0   .abs_section_d9
      _SPI0BR                                     DA       1       1       0   .abs_section_da
@@ -1807,33 +1815,35 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
-     SCI1String                                1100       C      12       1   .data       
-     SCI1IniTx                                 110C       1       1       3   .common     
-     SCI1Stringp                               110D       2       2       2   .common     
-     Stringcase                                110F       1       1       1   .common     
+     SCI1String                                1100       6       6       1   .data       
+     SCI1Stringp                               1106       2       2       5   .common     
+     tx_status                                 1108       1       1       4   .common     
      _Startup                                  C000       B      11       0   .init       
-     SCI1Config                              308000      16      22       2   .text       
-     SCI1Tx                                  308016       6       6       2   .text       
-     main                                    30801C      2E      46       2   .text       
-     Init                                    30804A      29      41       2   .text       
+     SCI1Isr                                   C015      2C      44       1   NON_BANKED  
+     serial_init                               C041      16      22       2   NON_BANKED  
+     serial_send                               C057       6       6       4   NON_BANKED  
+     set_clock_24mhz                           C05D      15      21       2   NON_BANKED  
+     main                                      C072      2E      46       2   NON_BANKED  
+     _Vector_21                                FFD4       2       2       0   .abs_section_ffd4
+     Init                                    308000      29      41       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
-NOT USED PROCEDURES
+NOT USED VARIABLES
 main.c.o:
-  SCI1Isr 
+  START STOP rx_buff rx_status 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC015 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC0A0 ---- SIZE       4 ---
 Filling bytes inserted
- 000B1100
-------- ROM-ADDRESS: 0xC019 ---- RAM-ADDRESS: 0x1100 ---- SIZE      11 ---
+ 00051100
+------- ROM-ADDRESS: 0xC0A4 ---- RAM-ADDRESS: 0x1100 ---- SIZE       5 ---
 Name of initialized Object : SCI1String
- 4652454553 43414C450A 0D
-------- ROM-ADDRESS: 0xC024 ---- SIZE       2 ---
+ 48454C4C4F
+------- ROM-ADDRESS: 0xC0A9 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1841,10 +1851,14 @@ Filling bytes inserted
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK Init main 
-SCI1Config                USES _SCI1BD _SCI1CR1 _SCI1CR2 _SCI1SR1 
-SCI1Tx                    USES _SCI1DRL _SCI1CR2 
-main                      USES SCI1Config SCI1IniTx SCI1String SCI1Stringp 
-                                Stringcase SCI1Tx 
+SCI1Isr                   USES _SCI1SR1 SCI1Stringp _SCI1DRL tx_status 
+                                _SCI1CR2 serial_send 
+serial_init               USES _SCI1BD _SCI1CR1 _SCI1CR2 _SCI1SR1 
+serial_send               USES _SCI1DRL _SCI1CR2 
+set_clock_24mhz           USES _CLKSEL _PLLCTL _SYNR _REFDV _CRGFLG 
+main                      USES set_clock_24mhz serial_init tx_status 
+                                SCI1String SCI1Stringp serial_send 
+_Vector_21                USES SCI1Isr 
 Init                      USES _startupData 
 
 *********************************************************************************************
@@ -1854,9 +1868,11 @@ DEPENDENCY TREE
  | 
  +- main                
  |  | 
- |  +- SCI1Config          
+ |  +- set_clock_24mhz     
  |  |    
- |  +- SCI1Tx              
+ |  +- serial_init         
+ |  |    
+ |  +- serial_send         
  |       
  +- _Startup            
     | 
@@ -1864,12 +1880,18 @@ DEPENDENCY TREE
     |    
     +- main                 (see above)
        
+ _Vector_21          
+ | 
+ +- SCI1Isr             
+    | 
+    +- serial_send          (see above)
+       
 *********************************************************************************************
 STATISTIC SECTION
 ---------------------------------------------------------------------------------------------
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 5
-Total size of all blocks to be downloaded: 155
+Number of blocks to be downloaded: 7
+Total size of all blocks to be downloaded: 216
 
