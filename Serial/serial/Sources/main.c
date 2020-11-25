@@ -33,14 +33,13 @@ void interrupt INT_VECT_NUM SCI1Isr() {
     if (SCI1SR1 & 0x80){     /*If transmission flag is set*/
         SCI1SR1;
         SCI1DRL = 0x00;
-        // if(*(SCI1Stringp++) != '\0'){
-        //      SCI1DRL=*SCI1Stringp;
-        //  } else {
-        //      tx_status=TX_READY;   /*Start new transmission cycle*/
-        //      SCI1CR2 &= 0x7F;         /*Disable TDRE interrupt*/
-        //      SCI1Stringp = SCI1String;
-        // }
-        SCI1CR2 &= 0x7F;
+        if(*(SCI1Stringp++) != '\0'){
+             SCI1DRL=*SCI1Stringp;
+         } else {
+             tx_status=TX_READY;   /*Start new transmission cycle*/
+             SCI1CR2 &= 0x7F;         /*Disable TDRE interrupt*/
+             SCI1Stringp = SCI1String;
+        }
     }  
     if(SCI1SR1 & 0x20)  {
         SCI1SR1;
@@ -52,7 +51,7 @@ void interrupt INT_VECT_NUM SCI1Isr() {
 
 
 unsigned char serial_init(){
-    SCI1BDL = 0x9C;      /*Configure baud rate at 9600 bps with*/
+    SCI1BDL = 156;      /*Configure baud rate at 9600 bps with*/
     SCI1BDH = 0x00;      /*an SCI1 clock modulo of 4MHz*/
     SCI1CR1 = 0x00;      /*8 data bits, no parity*/
     SCI1CR2 = 0x2C;      /*Enable Tx, Rx, and RDRF interrupts*/
@@ -76,7 +75,8 @@ void set_clock_24mhz(){
    /* REFDV=0x00;   for 4 MHz */
    /* REFDV=0x01;   for 8 MHz  */
    /* REFDV=0x03;   for 16 MHz */
-   while(!(0x08 & CRGFLG));    CLKSEL |= 0x80;
+   while(!(0x08 & CRGFLG));    
+   CLKSEL |= 0x80;
 }
 
 unsigned char main()    {
@@ -93,10 +93,10 @@ unsigned char main()    {
     tx_status = TX_READY;     /*Initialize transmission cycle flag*/
     //serial_send(h);
     for (;;){
-        // if(tx_status == TX_READY){
-        //     tx_status = TX_WAIT;
-        //     SCI1Stringp=SCI1String;       /*Set pointer to character string*/
-        //     serial_send(*SCI1Stringp);/*Send first byte of string*/
-        // }
+        if(tx_status == TX_READY){
+            tx_status = TX_WAIT;
+            SCI1Stringp=SCI1String;       /*Set pointer to character string*/
+            serial_send(*SCI1Stringp);/*Send first byte of string*/
+        }
     }
 }
