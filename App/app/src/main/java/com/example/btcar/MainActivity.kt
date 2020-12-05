@@ -1,16 +1,13 @@
 package com.example.btcar
 
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.SeekBar
 import org.jetbrains.anko.toast
 import java.io.IOException
 import java.util.*
@@ -20,7 +17,9 @@ class MainActivity : AppCompatActivity() {
 
     private val btAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
     private val REQUEST_ENABLE_BT = 1
+    // Universally Unique Identifier
     private val UUID = fromString("00001101-0000-1000-8000-00805F9B34FB")
+    // MAC address of a specific HC-05
     private val address = "00:18:91:D9:1A:73"
 
     lateinit var socket: BluetoothSocket
@@ -41,12 +40,8 @@ class MainActivity : AppCompatActivity() {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
-//        val pairedDevices: Set<BluetoothDevice>? = btAdapter.bondedDevices
-//        pairedDevices?.forEach { device ->
-//            val deviceName = device.name
-//            val deviceHardwareAddress = device.address // MAC address
-//        }
 
+        // Buttons
         val forwardMax = findViewById<ImageButton>(R.id.forwardMax)
         val forward = findViewById<ImageButton>(R.id.forward)
         val backMax = findViewById<ImageButton>(R.id.backMax)
@@ -63,12 +58,13 @@ class MainActivity : AppCompatActivity() {
         val dRight = findViewById<ImageButton>(R.id.donutRight)
         val stop = findViewById<ImageButton>(R.id.stop)
 
+        // Packet
         val startByte = 0xFF
-        val endByte = 0xFE
         var commandByte = 0x00
-
+        val endByte = 0xFE
         startConnection()
 
+        // Whenever a button is pressed, update commandByte
         forwardMax?.setOnClickListener{
             commandByte = 0x02
         }
@@ -134,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                 object : TimerTask() {
                     override fun run() {
                         if ( commandByte != 0x00 ) {
+                            // Send packet
                             writeByte(startByte)
                             writeByte(commandByte)
                             writeByte(endByte)
@@ -143,6 +140,7 @@ class MainActivity : AppCompatActivity() {
                 100
         )
 
+        // Disconnect Button
         val disconnect = findViewById<Button>(R.id.button)
         disconnect?.setOnClickListener{ endConnection() }
     }
@@ -150,17 +148,22 @@ class MainActivity : AppCompatActivity() {
     private fun startConnection() {
         val device = btAdapter!!.getRemoteDevice(address)
         Log.d("", "Connecting to ... $device")
+        // Notify user of connection attempt
         toast("Connecting to ... ${device.name}  mac: ${device.uuids[0]} address: ${device.address}")
+        // Turn off bt discovery to save battery life
         btAdapter.cancelDiscovery()
         try {
+            // Starts bt connection to device
             socket = device.createRfcommSocketToServiceRecord(UUID)
             socket.connect()
             Log.d("", "Connected")
+            // Notifies user of successful connection
             toast("Connected")
         }
         catch (e: IOException) {
             endConnection()
             Log.d("","Connection Failed")
+            // Notifies user of failed connection
             toast("Connection Failed")
 
         }
@@ -168,21 +171,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun writeByte(byte: Int) {
         try {
+            // Send byte over bt
             val out = socket.outputStream
             out.write(byte)
         }
         catch (e: IOException) {
             Log.d("","Failed to send byte")
+            // Notify user of failure to send
             toast("Failed to send byte")
         }
     }
 
     private fun endConnection() {
         try {
+            // disconnect from device
             socket.close()
         }
         catch (e:IOException) {
             Log.d("", "Failed to disconnect")
+            // Notify user of failure to disconnect
             toast("Failed to disconnect")
         }
     }
